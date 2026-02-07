@@ -1,0 +1,30 @@
+---
+const { globals } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer" id="contacts">
+  <div class="container footer-inner">
+    <div>
+      <div class="logo">{globals.brandName}</div>
+      <p class="muted">{globals.geoText}</p>
+      <p class="muted">{globals.workHours}</p>
+    </div>
+    <div>
+      <h3>Контакты</h3>
+      <ul class="contact-list">
+        <li><a href={`tel:${globals.contacts.phone}`}>{globals.contacts.phone}</a></li>
+        <li><a href={globals.contacts.telegram}>Telegram</a></li>
+        <li><a href={globals.contacts.whatsapp}>WhatsApp</a></li>
+        <li><a href={`mailto:${globals.contacts.email}`}>{globals.contacts.email}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Юридическая информация</h3>
+      <p class="muted">{globals.legal.legalType} {globals.legal.legalName}</p>
+      <p class="muted">ИНН: {globals.legal.inn}</p>
+      <p class="muted">ОГРН: {globals.legal.ogrn}</p>
+      <a href={globals.forms.policyUrl}>Политика обработки ПДн</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© {year} {globals.brandName}</div>
+</footer>

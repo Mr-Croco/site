@@ -1,0 +1,68 @@
+---
+import Layout from "../components/layout/Layout.astro";
+import Hero from "../components/sections/Hero.astro";
+import Benefits from "../components/sections/Benefits.astro";
+import Options from "../components/sections/Options.astro";
+import Process from "../components/sections/Process.astro";
+import UseCases from "../components/sections/UseCases.astro";
+import FAQ from "../components/sections/FAQ.astro";
+import ContactsForm from "../components/sections/ContactsForm.astro";
+import { getGlobals, getDirections, getDirectionBySlug } from "../lib/content";
+import { buildOrganizationJsonLd, buildFaqJsonLd } from "../lib/seo";
+
+const globals = await getGlobals();
+const directions = await getDirections();
+const poddony = await getDirectionBySlug("poddony");
+
+const faqSection = poddony.sections.find((section) => section.type === "faq");
+const seoJsonLd = [
+  buildOrganizationJsonLd({ globals, siteUrl: Astro.url.origin }),
+  buildFaqJsonLd({ items: faqSection.items }),
+];
+---
+<Layout
+  title="СибПаллет — корпоративный хаб"
+  description="СибПаллет: поддоны и другие направления для бизнеса в Красноярске и крае."
+  globals={globals}
+  directions={directions}
+  seoJsonLd={seoJsonLd}
+>
+  <Hero variant={poddony.heroVariant} h1={poddony.h1} subtitle={poddony.heroSubtitle} globals={globals} />
+
+  <section class="container section-card" id="directions">
+    <h2>Направления</h2>
+    <div class="grid">
+      {directions.map((direction) => (
+        <a class="direction-card" href={`/napravleniya/${direction.slug}/`}>
+          <h3>{direction.title}</h3>
+          <p class="muted">{direction.h1}</p>
+        </a>
+      ))}
+    </div>
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .direction-card {
+        padding: 20px;
+        border-radius: 16px;
+        background: rgba(18, 19, 26, 0.05);
+        transition: transform 0.2s ease;
+      }
+
+      .direction-card:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+  </section>
+
+  <Benefits items={poddony.sections.find((section) => section.type === "benefits").items} />
+  <Options cards={poddony.sections.find((section) => section.type === "options").cards} />
+  <Process steps={poddony.sections.find((section) => section.type === "process").steps} />
+  <UseCases items={poddony.sections.find((section) => section.type === "usecases").items} />
+  <FAQ items={faqSection.items} />
+  <ContactsForm globals={globals} />
+</Layout>

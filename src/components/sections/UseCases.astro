@@ -1,0 +1,26 @@
+---
+const { items } = Astro.props;
+---
+<section class="container section-card">
+  <h2>Кому подходит</h2>
+  <div class="chips">
+    {items.map((item) => (
+      <span class="chip">{item}</span>
+    ))}
+  </div>
+  <a class="btn" href="#raschet">Согласовать размеры</a>
+  <style>
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(18, 19, 26, 0.06);
+    }
+  </style>
+</section>

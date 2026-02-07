@@ -1,0 +1,34 @@
+---
+import Layout from "../components/layout/Layout.astro";
+import { getGlobals, getDirections } from "../lib/content";
+import { buildOrganizationJsonLd } from "../lib/seo";
+
+const globals = await getGlobals();
+const directions = await getDirections();
+const seoJsonLd = [buildOrganizationJsonLd({ globals, siteUrl: Astro.url.origin })];
+---
+<Layout
+  title="Политика обработки персональных данных — СибПаллет"
+  description="Политика обработки персональных данных для заявок СибПаллет."
+  globals={globals}
+  directions={directions}
+  seoJsonLd={seoJsonLd}
+>
+  <section class="container section-card">
+    <h1>Политика обработки персональных данных</h1>
+    <p class="muted">
+      Настоящая политика определяет порядок обработки и защиты персональных данных,
+      которые оставляют пользователи через формы сайта. Полный текст будет размещён
+      после согласования юр. информации.
+    </p>
+    <h2>Какие данные собираем</h2>
+    <ul>
+      <li>Контактные данные: телефон, имя, канал связи.</li>
+      <li>Параметры заявки: размеры, количество, комментарии.</li>
+    </ul>
+    <h2>Цель обработки</h2>
+    <p class="muted">Ответ на запрос и подготовка расчёта по ТЗ.</p>
+    <h2>Контакты</h2>
+    <p class="muted">Связь: {globals.contacts.email}</p>
+  </section>
+</Layout>

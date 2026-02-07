@@ -1,0 +1,62 @@
+---
+import Layout from "../../components/layout/Layout.astro";
+import Hero from "../../components/sections/Hero.astro";
+import Benefits from "../../components/sections/Benefits.astro";
+import Options from "../../components/sections/Options.astro";
+import Process from "../../components/sections/Process.astro";
+import UseCases from "../../components/sections/UseCases.astro";
+import FAQ from "../../components/sections/FAQ.astro";
+import ContactsForm from "../../components/sections/ContactsForm.astro";
+import { getGlobals, getDirections, getDirectionBySlug } from "../../lib/content";
+import { buildOrganizationJsonLd, buildFaqJsonLd } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  const directions = await getDirections();
+  return directions.map((direction) => ({ params: { slug: direction.slug } }));
+}
+
+const { slug } = Astro.params;
+const globals = await getGlobals();
+const directions = await getDirections();
+const direction = await getDirectionBySlug(slug);
+
+if (!direction) {
+  throw new Error("Direction not found");
+}
+
+const faqSection = direction.sections.find((section) => section.type === "faq");
+const seoJsonLd = [
+  buildOrganizationJsonLd({ globals, siteUrl: Astro.url.origin }),
+  buildFaqJsonLd({ items: faqSection.items }),
+];
+---
+<Layout
+  title={direction.seo.title}
+  description={direction.seo.description}
+  globals={globals}
+  directions={directions}
+  seoJsonLd={seoJsonLd}
+>
+  <Hero variant={direction.heroVariant} h1={direction.h1} subtitle={direction.heroSubtitle} globals={globals} />
+
+  {direction.sections.map((section) => {
+    if (section.type === "benefits") {
+      return <Benefits items={section.items} />;
+    }
+    if (section.type === "options") {
+      return <Options cards={section.cards} />;
+    }
+    if (section.type === "process") {
+      return <Process steps={section.steps} />;
+    }
+    if (section.type === "usecases") {
+      return <UseCases items={section.items} />;
+    }
+    if (section.type === "faq") {
+      return <FAQ items={section.items} />;
+    }
+    return null;
+  })}
+
+  <ContactsForm globals={globals} />
+</Layout>

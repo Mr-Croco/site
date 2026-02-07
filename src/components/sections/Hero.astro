@@ -1,0 +1,99 @@
+---
+const { variant = "v1", h1, subtitle, globals } = Astro.props;
+const isV3 = variant === "v3";
+---
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="pill">{globals.geoText}</span>
+      <h1>{h1}</h1>
+      <p class="lead">{subtitle}</p>
+      <div class="hero-actions">
+        <a class="btn" href="#raschet">{isV3 ? "Получить расчёт" : "Рассчитать по размерам"}</a>
+        <a class="btn secondary" href={isV3 ? `tel:${globals.contacts.phone}` : globals.contacts.telegram}>
+          {isV3 ? "Позвонить" : "Написать в Telegram"}
+        </a>
+      </div>
+      <p class="muted">{isV3 ? "Без прайса “вслепую” — считаем по параметрам, чтобы не переплачивать за лишнее" : "Собственное производство • Работаем по согласованному ТЗ"}</p>
+    </div>
+    <form class="hero-form section-card" id="hero-form">
+      <h3>Отправьте параметры для расчёта</h3>
+      <label>
+        Телефон*
+        <input type="tel" name="phone" placeholder="+7" required />
+      </label>
+      <label>
+        Размер (Д×Ш×В)
+        <input type="text" name="size" placeholder="Например, 1200×800×150" />
+      </label>
+      <label>
+        Количество
+        <input type="text" name="qty" placeholder="Например, 50" />
+      </label>
+      <label>
+        Город/район
+        <input type="text" name="location" placeholder="Красноярск" />
+      </label>
+      <button type="button" class="btn" data-open-form>Отправить на расчёт</button>
+      <p class="muted small">Нажимая кнопку, вы соглашаетесь с <a href="/politika/">политикой обработки данных</a>.</p>
+    </form>
+  </div>
+  <style>
+    .hero {
+      background: radial-gradient(circle at top left, rgba(43, 102, 255, 0.18), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(98, 214, 255, 0.22), transparent 40%);
+      padding: 40px 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 4vw, 48px);
+      margin: 0 0 16px;
+    }
+
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .hero-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-form input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(18, 19, 26, 0.1);
+    }
+
+    .small {
+      font-size: 12px;
+    }
+  </style>
+</section>

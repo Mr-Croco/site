@@ -1,0 +1,186 @@
+---
+const { globals } = Astro.props;
+---
+<section class="container section-card" id="raschet">
+  <div class="form-grid">
+    <div>
+      <h2>Рассчитать поддоны по вашим параметрам</h2>
+      <p class="muted">Оставьте параметры — уточним детали и вернёмся с расчётом.</p>
+      <div class="contact-links">
+        <a href={`tel:${globals.contacts.phone}`} data-metrika="click_phone">{globals.contacts.phone}</a>
+        <a href={globals.contacts.telegram} data-metrika="click_tg">Telegram</a>
+        <a href={globals.contacts.whatsapp} data-metrika="click_wa">WhatsApp</a>
+        <a href={`mailto:${globals.contacts.email}`}>{globals.contacts.email}</a>
+      </div>
+    </div>
+    <form class="lead-form" id="lead-form">
+      <input type="hidden" name="timestamp" value={Date.now().toString()} />
+      <label class="honeypot">
+        Ваш сайт
+        <input type="text" name="website" autocomplete="off" />
+      </label>
+      <label>
+        Имя
+        <input type="text" name="name" placeholder="Как к вам обращаться" />
+      </label>
+      <label>
+        Телефон*
+        <input type="tel" name="phone" required placeholder="+7" />
+      </label>
+      <label>
+        Канал ответа
+        <select name="channel">
+          <option>Telegram</option>
+          <option>WhatsApp</option>
+          <option>Звонок</option>
+        </select>
+      </label>
+      <label>
+        Размер Д×Ш×В
+        <input type="text" name="size" placeholder="Например, 1200×800×150" />
+      </label>
+      <label>
+        Количество
+        <input type="text" name="qty" />
+      </label>
+      <label>
+        Город/район
+        <input type="text" name="location" />
+      </label>
+      <label>
+        Комментарий
+        <textarea name="comment" rows="3"></textarea>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" required />
+        <span>Согласен(на) с <a href={globals.forms.policyUrl}>политикой обработки данных</a>.</span>
+      </label>
+      <button class="btn" type="submit">Отправить на расчёт</button>
+      <p class="muted small" id="lead-form-status"></p>
+    </form>
+  </div>
+  <style>
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+
+    .contact-links {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .lead-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .lead-form input,
+    .lead-form select,
+    .lead-form textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(18, 19, 26, 0.1);
+      font-family: inherit;
+    }
+
+    .checkbox {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .small {
+      font-size: 12px;
+    }
+  </style>
+  <script>
+    const form = document.querySelector("#lead-form");
+    const status = document.querySelector("#lead-form-status");
+    const heroButton = document.querySelector("[data-open-form]");
+
+    if (heroButton) {
+      heroButton.addEventListener("click", () => {
+        document.querySelector("#raschet")?.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    const reportGoal = (goal) => {
+      if (window.ym) {
+        window.ym(window.PUBLIC_METRIKA_ID || undefined, "reachGoal", goal);
+      }
+    };
+
+    const trackClick = (event) => {
+      const goal = event.currentTarget.dataset.metrika;
+      if (goal) {
+        reportGoal(goal);
+      }
+    };
+
+    document.querySelectorAll("[data-metrika]").forEach((link) => {
+      link.addEventListener("click", trackClick);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            reportGoal("view_form");
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(form);
+
+    let scrollReported = false;
+    window.addEventListener("scroll", () => {
+      if (scrollReported) return;
+      if (window.scrollY > document.body.scrollHeight * 0.5) {
+        reportGoal("scroll_50");
+        scrollReported = true;
+      }
+    });
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      status.textContent = "Отправляем...";
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error("Ошибка отправки");
+        }
+
+        status.textContent = "Заявка отправлена. Мы свяжемся с вами в рабочее время.";
+        reportGoal("lead_form_submit");
+        form.reset();
+      } catch (error) {
+        status.textContent = "Не удалось отправить форму. Попробуйте позже.";
+      }
+    });
+  </script>
+</section>

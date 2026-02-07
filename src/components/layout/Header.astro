@@ -1,0 +1,20 @@
+---
+const { globals, directions } = Astro.props;
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/">{globals.brandName}</a>
+    <nav class="nav">
+      <details class="nav-dropdown">
+        <summary>Направления</summary>
+        <div class="dropdown">
+          {directions.map((direction) => (
+            <a href={`/napravleniya/${direction.slug}/`}>{direction.title}</a>
+          ))}
+        </div>
+      </details>
+      <a href="#contacts">Контакты</a>
+      <a class="btn" href="#raschet">Рассчитать</a>
+    </nav>
+  </div>
+</header>
