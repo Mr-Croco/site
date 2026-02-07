@@ -1,0 +1,22 @@
+{
+  "brandName": "СибПаллет",
+  "geoText": "Красноярск и Красноярский край",
+  "workHours": "Пн–Пт 9:00–18:00",
+  "contacts": {
+    "phone": "{{PHONE}}",
+    "telegram": "{{TG_LINK}}",
+    "whatsapp": "{{WA_LINK}}",
+    "email": "{{EMAIL}}",
+    "addressText": "{{ADDRESS_TEXT}}"
+  },
+  "legal": {
+    "legalType": "{{ИП/ООО/…}}",
+    "legalName": "{{ЮР_НАЗВАНИЕ}}",
+    "inn": "{{ИНН}}",
+    "ogrn": "{{ОГРН}}"
+  },
+  "forms": {
+    "policyUrl": "/politika/",
+    "leadEmailTo": "{{LEADS_EMAIL}}"
+  }
+}

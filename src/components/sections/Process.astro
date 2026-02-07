@@ -1,0 +1,21 @@
+---
+const { steps } = Astro.props;
+---
+<section class="container section-card" id="how">
+  <h2>Как заказать</h2>
+  <ol class="steps">
+    {steps.map((step) => (
+      <li>{step}</li>
+    ))}
+  </ol>
+  <a class="btn" href="#raschet">Отправить параметры</a>
+  <style>
+    .steps {
+      display: grid;
+      gap: 12px;
+      padding-left: 20px;
+      margin: 20px 0;
+      color: var(--muted);
+    }
+  </style>
+</section>

@@ -1,0 +1,37 @@
+---
+const { items } = Astro.props;
+---
+<section class="container section-card" id="faq">
+  <h2>Частые вопросы</h2>
+  <div class="faq-list">
+    {items.map((item) => (
+      <details>
+        <summary>{item.q}</summary>
+        <p class="muted">{item.a}</p>
+      </details>
+    ))}
+  </div>
+  <a class="btn" href="#raschet">Задать вопрос и получить расчёт</a>
+  <style>
+    .faq-list {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    details {
+      padding: 16px;
+      background: rgba(43, 102, 255, 0.06);
+      border-radius: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    details p {
+      margin-top: 8px;
+    }
+  </style>
+</section>

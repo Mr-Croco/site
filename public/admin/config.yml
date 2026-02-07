@@ -1,0 +1,108 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "settings"
+    label: "Глобальные настройки"
+    files:
+      - name: "globals"
+        label: "Globals"
+        file: "content/globals.json"
+        fields:
+          - { label: "Brand Name", name: "brandName", widget: "string" }
+          - { label: "Geo Text", name: "geoText", widget: "string" }
+          - { label: "Work Hours", name: "workHours", widget: "string" }
+          - label: "Contacts"
+            name: "contacts"
+            widget: "object"
+            fields:
+              - { label: "Phone", name: "phone", widget: "string" }
+              - { label: "Telegram", name: "telegram", widget: "string" }
+              - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Address Text", name: "addressText", widget: "string", required: false }
+          - label: "Legal"
+            name: "legal"
+            widget: "object"
+            fields:
+              - { label: "Legal Type", name: "legalType", widget: "string", required: false }
+              - { label: "Legal Name", name: "legalName", widget: "string", required: false }
+              - { label: "INN", name: "inn", widget: "string", required: false }
+              - { label: "OGRN", name: "ogrn", widget: "string", required: false }
+          - label: "Forms"
+            name: "forms"
+            widget: "object"
+            fields:
+              - { label: "Policy URL", name: "policyUrl", widget: "string" }
+              - { label: "Lead Email To", name: "leadEmailTo", widget: "string", required: false }
+
+  - name: "directions"
+    label: "Направления"
+    folder: "content/directions"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Title (menu)", name: "title", widget: "string" }
+      - { label: "H1", name: "h1", widget: "string" }
+      - { label: "Hero Variant", name: "heroVariant", widget: "select", options: ["v1", "v3"] }
+      - { label: "Hero Subtitle", name: "heroSubtitle", widget: "string" }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        fields:
+          - { label: "Meta Title", name: "title", widget: "string" }
+          - { label: "Meta Description", name: "description", widget: "text" }
+      - label: "Contacts Override (optional)"
+        name: "contactsOverride"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Telegram", name: "telegram", widget: "string", required: false }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string", required: false }
+          - { label: "Email", name: "email", widget: "string", required: false }
+      - label: "Sections"
+        name: "sections"
+        widget: "list"
+        types:
+          - label: "Benefits"
+            name: "benefits"
+            widget: "object"
+            fields:
+              - { label: "Items", name: "items", widget: "list" }
+          - label: "Options"
+            name: "options"
+            widget: "object"
+            fields:
+              - label: "Cards"
+                name: "cards"
+                widget: "list"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "Text", name: "text", widget: "string" }
+          - label: "Process"
+            name: "process"
+            widget: "object"
+            fields:
+              - { label: "Steps", name: "steps", widget: "list" }
+          - label: "Use Cases"
+            name: "usecases"
+            widget: "object"
+            fields:
+              - { label: "Items", name: "items", widget: "list" }
+          - label: "FAQ"
+            name: "faq"
+            widget: "object"
+            fields:
+              - label: "Items"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Q", name: "q", widget: "string" }
+                  - { label: "A", name: "a", widget: "string" }

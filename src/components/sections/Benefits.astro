@@ -1,0 +1,21 @@
+---
+const { items } = Astro.props;
+---
+<section class="container section-card" id="benefits">
+  <h2>Производим деревянные поддоны под заказ</h2>
+  <ul class="list">
+    {items.map((item) => (
+      <li>{item}</li>
+    ))}
+  </ul>
+  <a class="btn" href="#raschet">Описать задачу</a>
+  <style>
+    .list {
+      display: grid;
+      gap: 12px;
+      padding-left: 20px;
+      margin-bottom: 20px;
+      color: var(--muted);
+    }
+  </style>
+</section>

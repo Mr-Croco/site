@@ -1,0 +1,33 @@
+---
+const { cards } = Astro.props;
+---
+<section class="container section-card" id="variants">
+  <h2>Варианты под задачу</h2>
+  <div class="grid">
+    {cards.map((card) => (
+      <article class="card">
+        <h3>{card.title}</h3>
+        <p class="muted">{card.text}</p>
+      </article>
+    ))}
+  </div>
+  <a class="btn" href="#raschet">Подобрать вариант</a>
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .card {
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(43, 102, 255, 0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+  </style>
+</section>
